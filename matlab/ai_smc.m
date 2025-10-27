@@ -11,8 +11,8 @@ Tm = 0.2;            % stała mechaniczna
 
 %% parameters of ST-SMC & Fuzzy
 % Stałe wzmocnienia dla bazowego ST-SMC (u_ST). Są mniejsze, bo AI pomoże.
-k1_st = 1;         % Bazowe k1 (mniejsze niż wcześniej)
-k2_st = 0.1;       % Bazowe k2 (mniejsze niż wcześniej)
+k1_st = 3;         % Bazowe k1 (mniejsze niż wcześniej)
+k2_st = 0.5;       % Bazowe k2 (mniejsze niż wcześniej)
 
 up_lim = 10;         % górne ograniczenie sterowania
 dn_lim = -up_lim;    % dolne ograniczenie sterowania
@@ -20,15 +20,12 @@ dn_lim = -up_lim;    % dolne ograniczenie sterowania
 % Wczytanie pliku FLC (musi być wcześniej stworzony w 'fuzzy')
 % Plik FIS musi być w folderze roboczym!
 fis = readfis('ai_smc_fuzzy.fis');
+assignin('base','ai_smc_fuzzy',fis);
+
 disp(['Inputs: ', num2str(numel(fis.input)), ', Outputs: ', num2str(numel(fis.output))]);
 
 assignin('base','ai_smc_fuzzy',fis);
 
-set_param('sim_ai_smc/Fuzzy Logic Controller','fisName','ai_smc_fuzzy');
-set_param('sim_ai_smc','SimulationCommand','update');
-%fuzzy_controller = 'ai_smc_fuzzy.fis';
-%fis_data = readfis('ai_smc_fuzzy.fis');
-%disp(['Liczba wejść w pliku FIS: ', num2str(size(fis_data.input, 2))]);
 load_system('sim_ai_smc'); % Jeśli chcesz załadować model przed symulacją
 
 %% start of simulation
