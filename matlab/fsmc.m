@@ -1,37 +1,49 @@
-%clear the workspace
-clear all
-close all
-clc
-%the parameters of simulation
-ts=0.0001;
-sim_time=2;
-%the parameters of the object
-Te=0.001;
-Tm=0.2;
-%the parameters of smc
-k_smc=100;
-M=-2;
-%start of simulation
+%% Wyczyść środowisko MATLAB
+clear all;        % usuń wszystkie zmienne z przestrzeni roboczej
+close all;        % zamknij wszystkie otwarte okna wykresów
+clc;              % wyczyść okno poleceń
+
+%% Parametry symulacji
+ts = 0.0001;     % krok czasowy symulacji [s]
+sim_time = 2;    % całkowity czas trwania symulacji [s]
+
+%% Parametry modelu obiektu (np. silnika DC)
+Te = 0.001;      % stała czasowa części elektrycznej obiektu
+Tm = 0.2;        % stała czasowa części mechanicznej obiektu
+
+%% Parametry regulatora SMC (Sliding Mode Control)
+k_smc = 100;     % współczynnik wzmocnienia regulatora SMC
+M = 2;           % współczynnik sterowania (określa kierunek i intensywność działania)
+
+%% Uruchomienie symulacji modelu Simulink
+% Model musi być zapisany w pliku 'sim_fsmc.slx'
 out = sim('sim_fsmc');
 
-% Extract data (assuming uniform time base; squeeze if needed for dimensions)
-t = out.tout;  % Or out.t.Time if you prefer the timeseries time
-w = squeeze(out.w.Data);
-w_ref = squeeze(out.w_ref.Data);
-de = squeeze(out.de.Data);
-e = squeeze(out.e.Data);
+%% Pobranie danych z wyników symulacji
+t = out.tout;             % wektor czasu
+w = squeeze(out.w.Data);  % prędkość rzeczywista obiektu
+w_ref = squeeze(out.w_ref.Data); % prędkość zadana (wartość odniesienia)
+de = squeeze(out.de.Data); % pochodna błędu (de/dt)
+e = squeeze(out.e.Data);   % błąd regulacji: e = w_ref - w
 
-%results
+%% Wizualizacja wyników
+
+% Wykres prędkości rzeczywistej i zadanej 
 figure(1)
-plot(t,w);
-grid;
-hold;
-plot(t,w_ref);
-legend('\omega','\omega_r_e_f');
-xlabel('t[s]');
-ylabel('\omega [p.u.]')
+plot(t, w);           % wykres prędkości rzeczywistej
+grid on;
+hold on;
+plot(t, w_ref);       % wykres prędkości zadanej
+legend('\omega', '\omega_{ref}');
+xlabel('t [s]');
+ylabel('\omega [p.u.]');
+title('Prędkość rzeczywista i zadana');
+
+% Portret fazowy (błąd e względem pochodnej de) 
 figure(2)
-plot(e,de);
-grid;
+plot(e, de);
+grid on;
 xlabel('e');
-ylabel('de')
+ylabel('de');
+title('Portret fazowy (e vs de)');
+hold on;
