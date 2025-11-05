@@ -1,0 +1,2 @@
+startup_stm32f767zitx.o: \
+ C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/STM32CubeIDE/Application/User/Startup/startup_stm32f767zitx.s

@@ -1,0 +1,10 @@
+config load "C:\Users\HP\OneDrive\Pulpit\praca_inz\stm\blink_led_mx\blink_led_mx.ioc"
+project toolchain STM32CubeIDE
+
+SetStructure Advanced
+
+project setCustomFWPath "C:\Users\HP\OneDrive\Pulpit\praca_inz\stm\STM32Cube_FW_F7_V1.16.2"
+
+project generate 
+
+exit wait
