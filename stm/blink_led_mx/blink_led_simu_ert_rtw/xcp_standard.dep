@@ -38,6 +38,7 @@ xcp_standard.o: \
  C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h \
  C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
+ C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_adc.h \
  C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_dma.h \
  C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_rcc.h \
  C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_bus.h \
@@ -100,6 +101,7 @@ C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Dri
 C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h:
 C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h:
+C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_adc.h:
 C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_dma.h:
 C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_rcc.h:
 C:/Users/HP/OneDrive/Pulpit/praca_inz/stm/blink_led_mx/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_bus.h:

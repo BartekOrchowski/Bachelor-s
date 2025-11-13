@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'blink_led_simu'.
  *
- * Model version                  : 1.10
+ * Model version                  : 1.22
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Wed Nov  5 13:59:16 2025
+ * C/C++ source code generated on : Wed Nov 12 16:15:48 2025
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -20,6 +20,8 @@
 #include "blink_led_simu.h"
 #include "blink_led_simu_types.h"
 #include "rtwtypes.h"
+#include "stm_adc_ll.h"
+#include <stddef.h>
 #include "stm_timer_ll.h"
 #include "blink_led_simu_private.h"
 
@@ -34,38 +36,81 @@ static RT_MODEL_blink_led_simu_T blink_led_simu_M_;
 RT_MODEL_blink_led_simu_T *const blink_led_simu_M = &blink_led_simu_M_;
 
 /* Forward declaration for local functions */
-static void blink_led_simu_SystemCore_setup(stm32cube_blocks_EncoderBlock_T *obj);
-static void blink_led_simu_SystemCore_setup(stm32cube_blocks_EncoderBlock_T *obj)
+static void blink_led_simu_SystemCore_setup(stm32cube_blocks_AnalogInput__T *obj);
+static void blink_led_s_SystemCore_setup_nm(stm32cube_blocks_PWMOutput_bl_T *obj);
+static void blink_led_si_SystemCore_setup_n(stm32cube_blocks_EncoderBlock_T *obj);
+static void blink_led_simu_SystemCore_setup(stm32cube_blocks_AnalogInput__T *obj)
+{
+  ADC_Type_T adcStructLoc;
+  obj->isSetupComplete = false;
+
+  /* Start for MATLABSystem: '<S6>/Analog to Digital Converter' */
+  obj->isInitialized = 1;
+  adcStructLoc.InternalBufferPtr = (void *)(NULL);
+
+  /* Start for MATLABSystem: '<S6>/Analog to Digital Converter' */
+  adcStructLoc.peripheralPtr = ADC1;
+  adcStructLoc.dmaPeripheralPtr = NULL;
+  adcStructLoc.dmastream = 0;
+  adcStructLoc.DataTransferMode = ADC_DR_TRANSFER;
+  adcStructLoc.DmaTransferMode = ADC_DMA_TRANSFER_LIMITED;
+  adcStructLoc.InjectedNoOfConversion = 0U;
+  adcStructLoc.InternalBufferSize = 1U;
+  adcStructLoc.RegularNoOfConversion = 1U;
+  obj->ADCHandle = ADC_Handle_Init(&adcStructLoc, ADC_NORMAL_MODE, 1,
+    ADC_TRIGGER_AND_READ, LL_ADC_REG_SEQ_SCAN_DISABLE);
+  enableADC(obj->ADCHandle);
+  startADCConversionForExternalTrigger(obj->ADCHandle, 1);
+  obj->isSetupComplete = true;
+}
+
+static void blink_led_s_SystemCore_setup_nm(stm32cube_blocks_PWMOutput_bl_T *obj)
+{
+  TIM_Type_T b;
+  boolean_T isSlaveModeTriggerEnabled;
+
+  /* Start for MATLABSystem: '<S10>/PWM Output' */
+  obj->isInitialized = 1;
+  b.PeripheralPtr = TIM3;
+  b.isCenterAlignedMode = false;
+
+  /* Start for MATLABSystem: '<S10>/PWM Output' */
+  b.repetitionCounter = 0U;
+  obj->TimerHandle = Timer_Handle_Init(&b);
+  enableTimerInterrupts(obj->TimerHandle, 0);
+  enableTimerChannel1(obj->TimerHandle, ENABLE_CH);
+  isSlaveModeTriggerEnabled = isSlaveTriggerModeEnabled(obj->TimerHandle);
+  if (!isSlaveModeTriggerEnabled) {
+    /* Start for MATLABSystem: '<S10>/PWM Output' */
+    enableCounter(obj->TimerHandle, false);
+  }
+
+  obj->isSetupComplete = true;
+}
+
+static void blink_led_si_SystemCore_setup_n(stm32cube_blocks_EncoderBlock_T *obj)
 {
   uint8_T ChannelInfo;
   TIM_Type_T b;
   boolean_T isSlaveModeTriggerEnabled;
 
-  /* Start for MATLABSystem: '<S2>/Encoder1' incorporates:
-   *  MATLABSystem: '<Root>/Encoder'
-   */
+  /* Start for MATLABSystem: '<Root>/Encoder' */
   obj->isInitialized = 1;
   b.PeripheralPtr = TIM4;
   b.isCenterAlignedMode = false;
 
-  /* Start for MATLABSystem: '<S2>/Encoder1' incorporates:
-   *  MATLABSystem: '<Root>/Encoder'
-   */
+  /* Start for MATLABSystem: '<Root>/Encoder' */
   b.repetitionCounter = 0U;
   obj->TimerHandle = Timer_Handle_Init(&b);
   enableTimerInterrupts(obj->TimerHandle, 0);
   ChannelInfo = ENABLE_CH;
 
-  /* Start for MATLABSystem: '<S2>/Encoder1' incorporates:
-   *  MATLABSystem: '<Root>/Encoder'
-   */
+  /* Start for MATLABSystem: '<Root>/Encoder' */
   enableTimerChannel1(obj->TimerHandle, ChannelInfo);
   enableTimerChannel2(obj->TimerHandle, ChannelInfo);
   isSlaveModeTriggerEnabled = isSlaveTriggerModeEnabled(obj->TimerHandle);
   if (!isSlaveModeTriggerEnabled) {
-    /* Start for MATLABSystem: '<S2>/Encoder1' incorporates:
-     *  MATLABSystem: '<Root>/Encoder'
-     */
+    /* Start for MATLABSystem: '<Root>/Encoder' */
     enableCounter(obj->TimerHandle, false);
   }
 
@@ -77,7 +122,21 @@ void blink_led_simu_step(void)
 {
   GPIO_TypeDef * portNameLoc;
   real_T rtb_PulseGenerator;
-  int32_T c;
+  int32_T diff;
+  uint32_T timerCounts;
+  uint16_T data;
+
+  /* MATLABSystem: '<S6>/Analog to Digital Converter' */
+  regularReadADCNormal(blink_led_simu_DW.obj.ADCHandle, ADC_TRIGGER_AND_READ,
+                       &data);
+
+  /* MATLABSystem: '<S10>/PWM Output' incorporates:
+   *  DataTypeConversion: '<Root>/Data Type Conversion'
+   *  Gain: '<Root>/Gain'
+   *  MATLABSystem: '<S6>/Analog to Digital Converter'
+   */
+  setDutyCycleInPercentageChannel1(blink_led_simu_DW.obj_e.TimerHandle, (real_T)
+    ((uint32_T)blink_led_simu_P.Gain_Gain * data) * 4.76837158203125E-7);
 
   /* DiscretePulseGenerator: '<Root>/Pulse Generator' */
   rtb_PulseGenerator = (blink_led_simu_DW.clockTickCounter <
@@ -93,48 +152,43 @@ void blink_led_simu_step(void)
 
   /* End of DiscretePulseGenerator: '<Root>/Pulse Generator' */
 
-  /* MATLABSystem: '<S4>/Digital Port Write' */
+  /* MATLABSystem: '<S8>/Digital Port Write' */
   portNameLoc = GPIOB;
-  c = (rtb_PulseGenerator != 0.0);
-  LL_GPIO_SetOutputPin(portNameLoc, (uint32_T)c);
-  LL_GPIO_ResetOutputPin(portNameLoc, ~(uint32_T)c & 1U);
-
-  /* MATLABSystem: '<S2>/Encoder1' */
-  blink_led_simu_B.Encoder1_o1 = getTimerCounterValue
-    (blink_led_simu_DW.obj_l.TimerHandle);
-
-  /* MATLABSystem: '<S2>/Encoder1' */
-  blink_led_simu_B.Encoder1_o2 = ouputDirectionOfCounter
-    (blink_led_simu_DW.obj_l.TimerHandle);
-
-  /* Switch: '<S2>/Switch' incorporates:
-   *  Constant: '<S2>/Constant'
-   *  Sum: '<S2>/Minus'
-   */
-  if (blink_led_simu_B.Encoder1_o2) {
-    rtb_PulseGenerator = (real_T)blink_led_simu_B.Encoder1_o1 -
-      blink_led_simu_P.Constant_Value;
-  } else {
-    rtb_PulseGenerator = blink_led_simu_B.Encoder1_o1;
-  }
-
-  /* Outputs for Atomic SubSystem: '<S2>/Triggered Subsystem' */
-  /* Gain: '<S5>/Gain' incorporates:
-   *  Switch: '<S2>/Switch'
-   */
-  blink_led_simu_B.Gain = blink_led_simu_P.Gain_Gain * rtb_PulseGenerator;
-
-  /* End of Outputs for SubSystem: '<S2>/Triggered Subsystem' */
-  /* Product: '<S2>/Divide' incorporates:
-   *  Constant: '<S2>/Constant1'
-   */
-  blink_led_simu_B.Divide = blink_led_simu_B.Gain /
-    blink_led_simu_P.Constant1_Value;
+  diff = (rtb_PulseGenerator != 0.0);
+  LL_GPIO_SetOutputPin(portNameLoc, (uint32_T)diff);
+  LL_GPIO_ResetOutputPin(portNameLoc, ~(uint32_T)diff & 1U);
 
   /* MATLABSystem: '<Root>/Encoder' */
-  blink_led_simu_B.count = getTimerCounterValue
-    (blink_led_simu_DW.obj.TimerHandle);
+  timerCounts = getTimerCounterValue(blink_led_simu_DW.obj_l.TimerHandle);
 
+  /* Gain: '<Root>/Gain1' incorporates:
+   *  MATLABSystem: '<Root>/Encoder'
+   */
+  blink_led_simu_B.reps = (uint64_T)blink_led_simu_P.Gain1_Gain * timerCounts;
+
+  /* MATLAB Function: '<Root>/MATLAB Function' */
+  if (!blink_led_simu_DW.inited_not_empty) {
+    blink_led_simu_DW.prevCnt = 0;
+    blink_led_simu_DW.inited_not_empty = true;
+    blink_led_simu_B.rpm = 0.0;
+  } else {
+    if (blink_led_simu_DW.prevCnt <= MIN_int32_T) {
+      diff = MAX_int32_T;
+    } else {
+      diff = -blink_led_simu_DW.prevCnt;
+    }
+
+    if (diff > 32767) {
+      diff -= 65536;
+    } else if (diff < -32768) {
+      diff += 65536;
+    }
+
+    blink_led_simu_DW.prevCnt = 0;
+    blink_led_simu_B.rpm = (real_T)diff / 3200.0 / 0.001 * 60.0;
+  }
+
+  /* End of MATLAB Function: '<Root>/MATLAB Function' */
   {                                    /* Sample time: [0.001s, 0.0s] */
   }
 
@@ -157,10 +211,10 @@ void blink_led_simu_initialize(void)
   blink_led_simu_M->Timing.stepSize0 = 0.001;
 
   /* External mode info */
-  blink_led_simu_M->Sizes.checksums[0] = (136901788U);
-  blink_led_simu_M->Sizes.checksums[1] = (2699265801U);
-  blink_led_simu_M->Sizes.checksums[2] = (1936744896U);
-  blink_led_simu_M->Sizes.checksums[3] = (3520765107U);
+  blink_led_simu_M->Sizes.checksums[0] = (3627292058U);
+  blink_led_simu_M->Sizes.checksums[1] = (2613575792U);
+  blink_led_simu_M->Sizes.checksums[2] = (2291431759U);
+  blink_led_simu_M->Sizes.checksums[3] = (1022985207U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -181,15 +235,20 @@ void blink_led_simu_initialize(void)
     rteiSetTPtr(blink_led_simu_M->extModeInfo, rtmGetTPtr(blink_led_simu_M));
   }
 
-  /* Start for MATLABSystem: '<S2>/Encoder1' */
-  blink_led_simu_DW.obj_l.isInitialized = 0;
-  blink_led_simu_DW.obj_l.matlabCodegenIsDeleted = false;
-  blink_led_simu_SystemCore_setup(&blink_led_simu_DW.obj_l);
-
-  /* Start for MATLABSystem: '<Root>/Encoder' */
+  /* Start for MATLABSystem: '<S6>/Analog to Digital Converter' */
   blink_led_simu_DW.obj.isInitialized = 0;
   blink_led_simu_DW.obj.matlabCodegenIsDeleted = false;
   blink_led_simu_SystemCore_setup(&blink_led_simu_DW.obj);
+
+  /* Start for MATLABSystem: '<S10>/PWM Output' */
+  blink_led_simu_DW.obj_e.isInitialized = 0;
+  blink_led_simu_DW.obj_e.matlabCodegenIsDeleted = false;
+  blink_led_s_SystemCore_setup_nm(&blink_led_simu_DW.obj_e);
+
+  /* Start for MATLABSystem: '<Root>/Encoder' */
+  blink_led_simu_DW.obj_l.isInitialized = 0;
+  blink_led_simu_DW.obj_l.matlabCodegenIsDeleted = false;
+  blink_led_si_SystemCore_setup_n(&blink_led_simu_DW.obj_l);
 }
 
 /* Model terminate function */
@@ -197,7 +256,31 @@ void blink_led_simu_terminate(void)
 {
   uint8_T ChannelInfo;
 
-  /* Terminate for MATLABSystem: '<S2>/Encoder1' */
+  /* Terminate for MATLABSystem: '<S6>/Analog to Digital Converter' */
+  if (!blink_led_simu_DW.obj.matlabCodegenIsDeleted) {
+    blink_led_simu_DW.obj.matlabCodegenIsDeleted = true;
+    if ((blink_led_simu_DW.obj.isInitialized == 1) &&
+        blink_led_simu_DW.obj.isSetupComplete) {
+      ADC_Handle_Deinit(blink_led_simu_DW.obj.ADCHandle, ADC_NORMAL_MODE, 1);
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S6>/Analog to Digital Converter' */
+
+  /* Terminate for MATLABSystem: '<S10>/PWM Output' */
+  if (!blink_led_simu_DW.obj_e.matlabCodegenIsDeleted) {
+    blink_led_simu_DW.obj_e.matlabCodegenIsDeleted = true;
+    if ((blink_led_simu_DW.obj_e.isInitialized == 1) &&
+        blink_led_simu_DW.obj_e.isSetupComplete) {
+      disableCounter(blink_led_simu_DW.obj_e.TimerHandle);
+      disableTimerInterrupts(blink_led_simu_DW.obj_e.TimerHandle, 0);
+      disableTimerChannel1(blink_led_simu_DW.obj_e.TimerHandle, ENABLE_CH);
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S10>/PWM Output' */
+
+  /* Terminate for MATLABSystem: '<Root>/Encoder' */
   if (!blink_led_simu_DW.obj_l.matlabCodegenIsDeleted) {
     blink_led_simu_DW.obj_l.matlabCodegenIsDeleted = true;
     if ((blink_led_simu_DW.obj_l.isInitialized == 1) &&
@@ -207,20 +290,6 @@ void blink_led_simu_terminate(void)
       ChannelInfo = ENABLE_CH;
       disableTimerChannel1(blink_led_simu_DW.obj_l.TimerHandle, ChannelInfo);
       disableTimerChannel2(blink_led_simu_DW.obj_l.TimerHandle, ChannelInfo);
-    }
-  }
-
-  /* End of Terminate for MATLABSystem: '<S2>/Encoder1' */
-  /* Terminate for MATLABSystem: '<Root>/Encoder' */
-  if (!blink_led_simu_DW.obj.matlabCodegenIsDeleted) {
-    blink_led_simu_DW.obj.matlabCodegenIsDeleted = true;
-    if ((blink_led_simu_DW.obj.isInitialized == 1) &&
-        blink_led_simu_DW.obj.isSetupComplete) {
-      disableCounter(blink_led_simu_DW.obj.TimerHandle);
-      disableTimerInterrupts(blink_led_simu_DW.obj.TimerHandle, 0);
-      ChannelInfo = ENABLE_CH;
-      disableTimerChannel1(blink_led_simu_DW.obj.TimerHandle, ChannelInfo);
-      disableTimerChannel2(blink_led_simu_DW.obj.TimerHandle, ChannelInfo);
     }
   }
 

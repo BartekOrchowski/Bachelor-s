@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
+#include "stm32f7xx_ll_adc.h"
 #include "stm32f7xx_ll_dma.h"
 #include "stm32f7xx_ll_rcc.h"
 #include "stm32f7xx_ll_bus.h"
@@ -68,6 +69,7 @@ void MX_USART3_UART_Init(void);
 void MX_USB_OTG_FS_PCD_Init(void);
 void MX_TIM3_Init(void);
 void MX_TIM4_Init(void);
+void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN EFP */
 

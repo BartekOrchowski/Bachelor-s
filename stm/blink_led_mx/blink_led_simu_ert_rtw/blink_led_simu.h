@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'blink_led_simu'.
  *
- * Model version                  : 1.10
+ * Model version                  : 1.22
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Wed Nov  5 13:59:16 2025
+ * C/C++ source code generated on : Wed Nov 12 16:15:48 2025
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -73,28 +73,31 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T Divide;                       /* '<S2>/Divide' */
-  real_T Gain;                         /* '<S5>/Gain' */
-  uint32_T count;                      /* '<Root>/Encoder' */
-  uint32_T Encoder1_o1;                /* '<S2>/Encoder1' */
-  boolean_T Encoder1_o2;               /* '<S2>/Encoder1' */
+  uint64_T reps;                       /* '<Root>/Gain1' */
+  real_T rpm;                          /* '<Root>/MATLAB Function' */
 } B_blink_led_simu_T;
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
-  stm32cube_blocks_EncoderBlock_T obj; /* '<Root>/Encoder' */
-  stm32cube_blocks_EncoderBlock_T obj_l;/* '<S2>/Encoder1' */
+  stm32cube_blocks_AnalogInput__T obj; /* '<S6>/Analog to Digital Converter' */
+  stm32cube_blocks_EncoderBlock_T obj_l;/* '<Root>/Encoder' */
+  stm32cube_blocks_PWMOutput_bl_T obj_e;/* '<S10>/PWM Output' */
+  struct {
+    void *LoggedData;
+  } Scope1_PWORK;                      /* '<Root>/Scope1' */
+
+  struct {
+    void *LoggedData;
+  } Scope_PWORK;                       /* '<Root>/Scope' */
+
   int32_T clockTickCounter;            /* '<Root>/Pulse Generator' */
+  int32_T prevCnt;                     /* '<Root>/MATLAB Function' */
+  uint8_T is_active_c2_blink_led_simu; /* '<Root>/MATLAB Function' */
+  boolean_T inited_not_empty;          /* '<Root>/MATLAB Function' */
 } DW_blink_led_simu_T;
 
 /* Parameters (default storage) */
 struct P_blink_led_simu_T_ {
-  real_T Constant_Value;               /* Expression: 65536
-                                        * Referenced by: '<S2>/Constant'
-                                        */
-  real_T Gain_Gain;                    /* Expression: 3
-                                        * Referenced by: '<S5>/Gain'
-                                        */
   real_T PulseGenerator_Amp;           /* Expression: 1
                                         * Referenced by: '<Root>/Pulse Generator'
                                         */
@@ -107,8 +110,11 @@ struct P_blink_led_simu_T_ {
   real_T PulseGenerator_PhaseDelay;    /* Expression: 0
                                         * Referenced by: '<Root>/Pulse Generator'
                                         */
-  real_T Constant1_Value;              /* Expression: 1250
-                                        * Referenced by: '<S2>/Constant1'
+  uint32_T Gain1_Gain;                 /* Computed Parameter: Gain1_Gain
+                                        * Referenced by: '<Root>/Gain1'
+                                        */
+  uint16_T Gain_Gain;                  /* Computed Parameter: Gain_Gain
+                                        * Referenced by: '<Root>/Gain'
                                         */
 };
 
@@ -184,11 +190,16 @@ extern volatile boolean_T runModel;
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'blink_led_simu'
- * '<S1>'   : 'blink_led_simu/Digital Port Write'
- * '<S2>'   : 'blink_led_simu/ENKODER'
- * '<S3>'   : 'blink_led_simu/Digital Port Write/ECSoC'
- * '<S4>'   : 'blink_led_simu/Digital Port Write/ECSoC/ECSimCodegen'
- * '<S5>'   : 'blink_led_simu/ENKODER/Triggered Subsystem'
+ * '<S1>'   : 'blink_led_simu/Analog to Digital Converter'
+ * '<S2>'   : 'blink_led_simu/Digital Port Write'
+ * '<S3>'   : 'blink_led_simu/MATLAB Function'
+ * '<S4>'   : 'blink_led_simu/PWM Output'
+ * '<S5>'   : 'blink_led_simu/Analog to Digital Converter/ECSoC'
+ * '<S6>'   : 'blink_led_simu/Analog to Digital Converter/ECSoC/ECSimCodegen'
+ * '<S7>'   : 'blink_led_simu/Digital Port Write/ECSoC'
+ * '<S8>'   : 'blink_led_simu/Digital Port Write/ECSoC/ECSimCodegen'
+ * '<S9>'   : 'blink_led_simu/PWM Output/ECSoC'
+ * '<S10>'  : 'blink_led_simu/PWM Output/ECSoC/ECSimCodegen'
  */
 #endif                                 /* RTW_HEADER_blink_led_simu_h_ */
 

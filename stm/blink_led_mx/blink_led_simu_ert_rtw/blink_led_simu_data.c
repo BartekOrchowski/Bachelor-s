@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'blink_led_simu'.
  *
- * Model version                  : 1.10
+ * Model version                  : 1.22
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Wed Nov  5 13:59:16 2025
+ * C/C++ source code generated on : Wed Nov 12 16:15:48 2025
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -21,16 +21,6 @@
 
 /* Block parameters (default storage) */
 P_blink_led_simu_T blink_led_simu_P = {
-  /* Expression: 65536
-   * Referenced by: '<S2>/Constant'
-   */
-  65536.0,
-
-  /* Expression: 3
-   * Referenced by: '<S5>/Gain'
-   */
-  3.0,
-
   /* Expression: 1
    * Referenced by: '<Root>/Pulse Generator'
    */
@@ -51,10 +41,15 @@ P_blink_led_simu_T blink_led_simu_P = {
    */
   0.0,
 
-  /* Expression: 1250
-   * Referenced by: '<S2>/Constant1'
+  /* Computed Parameter: Gain1_Gain
+   * Referenced by: '<Root>/Gain1'
    */
-  1250.0
+  3435973837U,
+
+  /* Computed Parameter: Gain_Gain
+   * Referenced by: '<Root>/Gain'
+   */
+  51213U
 };
 
 /*

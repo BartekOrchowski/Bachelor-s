@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'blink_led_simu'.
  *
- * Model version                  : 1.10
+ * Model version                  : 1.22
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Wed Nov  5 13:59:16 2025
+ * C/C++ source code generated on : Wed Nov 12 16:15:48 2025
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -78,6 +78,7 @@ int main(int argc, char **argv)
   MX_USB_OTG_FS_PCD_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
+  MX_ADC1_Init();
   rtmSetErrorStatus(blink_led_simu_M, 0);
 
   /* Parse External Mode command line arguments */

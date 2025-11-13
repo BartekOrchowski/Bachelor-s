@@ -1,3 +1,4 @@
+stm_adc_ll.o
 stm_timer_ll.o
 xcp_ext_mode.o
 blink_led_simu.o
@@ -30,8 +31,8 @@ stm32f7xx_hal_timebase_tim.o
 stm32f7xx_hal_tim.o
 stm32f7xx_hal_tim_ex.o
 stm32f7xx_ll_gpio.o
+stm32f7xx_ll_adc.o
 stm32f7xx_ll_dma.o
-stm32f7xx_ll_tim.o
 stm32f7xx_ll_rcc.o
 stm32f7xx_ll_utils.o
 stm32f7xx_ll_exti.o
@@ -49,6 +50,7 @@ stm32f7xx_hal.o
 stm32f7xx_hal_i2c.o
 stm32f7xx_hal_i2c_ex.o
 stm32f7xx_hal_exti.o
+stm32f7xx_ll_tim.o
 stm32f7xx_ll_usart.o
 stm32f7xx_hal_pcd.o
 stm32f7xx_hal_pcd_ex.o
