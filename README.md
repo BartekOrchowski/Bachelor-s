@@ -124,23 +124,17 @@ Possible future extensions of this work include:
 
 ## Images / Gallery
 
+### ST-SMC Control Structure
+![ST-SMC Control Structure](images/st-smc-strukt.png)
+
+### RBFNN Controller Structure
+![RBFNN Controller Structure](images/rbf-cntrl.drawio2.png)
+
 ### Laboratory Setup
-![Laboratory Setup](images/laboratory_setup_placeholder.jpg)
+![Laboratory Setup](images/stanowisko-bok-opis.png)
 
-### BLDC Motor Test Bench
-![BLDC Motor Test Bench](images/test_bench_placeholder.jpg)
+### Step Change in Speed Reference — ST-SMC
+![Step Change in Speed Reference — ST-SMC](images/w.png)
 
-### Simulink Control Model
-![Simulink Control Model](images/simulink_model_placeholder.png)
-
-### Experimental Speed Response
-![Experimental Speed Response](images/speed_response_placeholder.png)
-
-### Motor Current Waveform
-![Motor Current Waveform](images/current_waveform_placeholder.png)
-
-### Control Signal Plot
-![Control Signal Plot](images/control_signal_placeholder.png)
-
-### STM32 Hardware / Controller Board
-![STM32 Hardware](images/stm32_hardware_placeholder.jpg)
+### Reversals (Zoomed View) — RBFNN
+![Reversals (Zoomed View) — RBFNN](images/wp.png)
