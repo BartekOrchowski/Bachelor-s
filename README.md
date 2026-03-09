@@ -70,10 +70,6 @@ The following tools and technologies were used in this project:
 - **Encoder-based speed measurement**
 - **PWM motor control**
 
-> Placeholder: add a screenshot of the Simulink model here.
-
-![Simulink model placeholder](images/simulink_model_placeholder.png)
-
 ---
 
 ## Control Methods
