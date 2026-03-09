@@ -65,7 +65,6 @@ The following tools and technologies were used in this project:
 - **Simulink Data Inspector**
 - **STM32 microcontroller**
 - **STM32CubeMX**
-- **ARM-based embedded platform**
 - **USART communication**
 - **Encoder-based speed measurement**
 - **PWM motor control**
@@ -91,37 +90,6 @@ Its effectiveness was confirmed both in simulation and in real experimental test
 
 ---
 
-## Experimental Findings
-
-### Simulink and STM32 Implementation
-Based on the implementation process, several practical conclusions were drawn:
-
-- Preparing the Simulink environment for STM32 programming requires a significant initial time investment, mainly due to the installation and configuration of MathWorks tools.
-- Once configured, the development of peripherals and controllers is efficient thanks to the clear block-based structure of Simulink models.
-- **Simulink Data Inspector** proved to be a very useful tool for real-time signal observation, controller tuning, and debugging.
-- Peripheral configuration in **STM32CubeMX** was straightforward and efficient due to its graphical interface.
-
-### Controller Performance
-Experimental tests of the two BLDC speed controllers, **ST-SMC** and **adaptive RBFNN-based control**, led to the following conclusions:
-
-- The measured speed, motor current, and control signal had shapes similar to those observed during simulation studies.
-- Both controllers reproduced the reference signal with high accuracy.
-- Both controllers showed good robustness against load torque disturbances.
-- Motor current waveforms exhibited visible oscillations even after filtering. Possible causes include PWM current ripple, BLDC commutation effects, and measurement path limitations such as noise, ADC quantization, and offset.
-- The control signal showed a jagged profile, mainly due to fluctuations in speed feedback from the encoder. This was likely caused by the low resolution of the encoder used in the setup.
-- The adaptive behavior of the neural network was successfully observed in experiments: speed overshoot decreased over time as the network weights adapted.
-- Adaptation was slower for low-amplitude reversals, because the error signal and sliding variable were smaller, resulting in weaker weight updates and a longer learning process.
-
-> Placeholder: add a photo of the laboratory setup here.
-
-![Laboratory setup placeholder](images/lab_setup_placeholder.jpg)
-
-> Placeholder: add an experimental speed response plot here.
-
-![Experimental results placeholder](images/experimental_results_placeholder.png)
-
----
-
 ## Key Conclusions
 The thesis demonstrates that **sliding mode control**, especially its more advanced variants, is an effective method for BLDC motor speed control.
 
@@ -132,36 +100,7 @@ The work confirms that:
 - the **simulation stage in MATLAB/Simulink** is essential for the initial verification of control algorithms,
 - simulation alone is not sufficient for a reliable assessment of controller quality,
 - real-world implementation reveals effects that are often neglected in simulation models,
-- successful simulation performance does not guarantee straightforward real-world operation,
-- practical deployment of **ST-SMC** required additional adaptation to the limitations and specifics of the laboratory test bench,
 - integration of **MATLAB/Simulink** with **STM32** enables efficient transfer of algorithms from simulation to real-time hardware implementation.
-
----
-
-## Why This Project Matters
-This project shows the full engineering workflow from:
-1. literature review,
-2. mathematical modeling,
-3. controller design,
-4. simulation validation,
-5. embedded implementation,
-6. and experimental verification.
-
-It highlights the importance of combining:
-- **control theory**,
-- **embedded systems engineering**,
-- and **intelligent/adaptive methods**  
-in modern electric drive applications.
-
----
-
-## Limitations
-Although the results were promising, the work also revealed several practical limitations:
-
-- the load control system in the laboratory setup should be improved for more stable and repeatable torque application,
-- encoder resolution affected the quality of feedback signals,
-- simulation models do not fully capture practical issues such as measurement noise, quantization, and hardware constraints,
-- automatic code generation from Simulink was not compared against a manually optimized implementation in C.
 
 ---
 
@@ -174,7 +113,6 @@ Possible future extensions of this work include:
 - comparison between:
   - automatically generated code from Simulink,
   - and manually optimized embedded C implementation,
-- evaluation of memory usage, CPU load, control loop execution time, and impact on regulation quality,
 - battery-powered standalone version of the controller,
 - addition of a user interface for reference speed setting and signal visualization,
 - replacing PC-based reference transmission via USART with local input devices such as a potentiometer connected to the ADC,
@@ -184,6 +122,25 @@ Possible future extensions of this work include:
   - motor current,
   - and other live system parameters.
 
-> Placeholder: add a block diagram of the full control system here.
+## Images / Gallery
 
-![Control system diagram placeholder](images/control_system_placeholder.png)
+### Laboratory Setup
+![Laboratory Setup](images/laboratory_setup_placeholder.jpg)
+
+### BLDC Motor Test Bench
+![BLDC Motor Test Bench](images/test_bench_placeholder.jpg)
+
+### Simulink Control Model
+![Simulink Control Model](images/simulink_model_placeholder.png)
+
+### Experimental Speed Response
+![Experimental Speed Response](images/speed_response_placeholder.png)
+
+### Motor Current Waveform
+![Motor Current Waveform](images/current_waveform_placeholder.png)
+
+### Control Signal Plot
+![Control Signal Plot](images/control_signal_placeholder.png)
+
+### STM32 Hardware / Controller Board
+![STM32 Hardware](images/stm32_hardware_placeholder.jpg)
